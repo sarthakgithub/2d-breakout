@@ -119,7 +119,7 @@ function drawScore() {
 }
 
 function drawLives(){
-
+    ctx.fillText("Lives: "+lives, 400, 20);
 }
 
 function draw(){
@@ -128,6 +128,7 @@ function draw(){
     drawBall();
     drawPaddle();
     drawScore();
+    drawLives();
     collisionDetection();
 
     if(x + dx > canvas.width-ballRadius){
@@ -142,8 +143,19 @@ function draw(){
         if(x>paddleX && x < paddleX + paddleWidth)
             dy=-dy;
         else{
-            //document.location.reload();
-
+            lives--;
+            console.log('lives',lives);
+            if(!lives){
+                console.log('end case');
+                document.location.reload();
+            }
+            else {
+                x = canvas.width/2;
+                y = canvas.height-30;
+                dx = 2;
+                dy = -2;
+                paddleX = (canvas.width-paddleWidth)/2;
+            }
         }
     }
     if(y + dy < ballRadius){
