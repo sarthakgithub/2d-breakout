@@ -1,47 +1,31 @@
-const path = require('path');
-const webpack = require('webpack');
+var path = require('path');
+var OpenBrowserPlugin = require('open-browser-webpack-plugin');
 
 module.exports = {
-
-	entry: ['babel-polyfill', './src/index.js'],
-
-	devtool: 'inline-source-map',
-	output: {
-		path : path.resolve('public'),
-		filename : 'bundle.js'
-	},
-	devServer : {
-		inline: true,
-		port: 8080,
-		historyApiFallback: true
-	},
-	resolve : {
-		extensions : ['.js','.jsx','.json']
-	},
-	plugins : [
-		new webpack.HotModuleReplacementPlugin()
-	],
-	module : {
-		rules : [
-
-			{
-				test : [/\.js?$/,/\.jsx?$/],
-				loader : 'babel-loader',
-				exclude : /(node_modules)/,
-				query : {
+    entry : [
+        "babel-polyfill",path.resolve(__dirname,'../src/components/index.jsx')
+    ],
+    output : {
+        path: path.resolve(__dirname,'../dist'),
+        publicPath : '/',
+        filename : 'bundle.js'
+    },
+    resolve : {
+        extensions : ['.js','.json']
+    },
+    module : {
+        rules : [
+            {
+                test : [/\.js?$/,/\.jsx?$/],
+                loader : 'babel-loader',
+                exclude : /(node_modules)/,
+                query : {
                     presets : ['es2015','react']
                 }
-			},
-			{
-				test: [/\.css$/,/\.less$/],
-        		use: [ 'style-loader', 'css-loader', 'less-loader' ]
-			},
-			{
-	        	test: /\.(png|svg|jpg|gif)$/,
-	        	use: [
-	        		'file-loader'
-	        	]
-	       	}
-		]
-	}
+            }
+        ]
+    },
+    plugins: [
+        new OpenBrowserPlugin({ url: 'http://localhost:3000' })
+    ]
 }
